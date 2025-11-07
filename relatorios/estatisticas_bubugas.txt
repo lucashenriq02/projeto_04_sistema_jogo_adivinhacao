@@ -1,0 +1,12 @@
+{
+  "bubugas": {
+    "nome": "Lucas Henrique",
+    "total_partidas": 2,
+    "vitorias": 1,
+    "derrotas": 1,
+    "taxa_vitoria": 50.0,
+    "media_tentativas": 8.5,
+    "melhor_pontuacao": 40,
+    "pontuacao_total": 40
+  }
+}

@@ -1,0 +1,26 @@
+{
+  "ranking_pontuacao_media": [
+    [
+      "bubugas",
+      40.0
+    ]
+  ],
+  "ranking_vitorias": [
+    [
+      "bubugas",
+      1
+    ]
+  ],
+  "ranking_melhor_pontuacao": [
+    [
+      "bubugas",
+      40
+    ]
+  ],
+  "ranking_menor_tentativas": [
+    [
+      "bubugas",
+      7
+    ]
+  ]
+}

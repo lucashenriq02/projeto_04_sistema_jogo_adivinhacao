@@ -1,0 +1,7 @@
+{
+  "bubugas": {
+    "nome": "Lucas Henrique",
+    "usuario": "bubugas",
+    "data_cadastro": "2025-11-06"
+  }
+}

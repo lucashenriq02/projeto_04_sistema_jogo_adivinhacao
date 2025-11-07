@@ -1,0 +1,41 @@
+[
+  {
+    "id": 1,
+    "jogador": "bubugas",
+    "numero_secreto": 27,
+    "tentativas": [
+      19,
+      40,
+      30,
+      25,
+      26,
+      28,
+      27
+    ],
+    "total_tentativas": 7,
+    "pontuacao": 40,
+    "resultado": "Vitória",
+    "data": "2025-11-06"
+  },
+  {
+    "id": 2,
+    "jogador": "bubugas",
+    "numero_secreto": 32,
+    "tentativas": [
+      1,
+      1,
+      1,
+      1,
+      1,
+      1,
+      1,
+      1,
+      1,
+      1
+    ],
+    "total_tentativas": 10,
+    "pontuacao": 0,
+    "resultado": "Derrota",
+    "data": "2025-11-07"
+  }
+]
