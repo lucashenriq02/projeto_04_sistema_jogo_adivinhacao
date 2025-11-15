@@ -1,0 +1,20 @@
+{
+  "estatisticas": {
+    "bugas": {
+      "nome": "Lucas Henrique Damasceno Fernandes",
+      "total_partidas": 1,
+      "vitorias": 1,
+      "derrotas": 0,
+      "taxa_vitoria": 100.0,
+      "media_tentativas": 9.0,
+      "melhor_pontuacao": 20,
+      "pontuacao_total": 20
+    }
+  },
+  "funcionais": {
+    "soma_total": 20,
+    "media_pontuacao": 20.0,
+    "maior_pontuacao": 20,
+    "total_vitorias": 1
+  }
+}

@@ -3,5 +3,10 @@
     "nome": "Lucas Henrique",
     "usuario": "bubugas",
     "data_cadastro": "2025-11-06"
+  },
+  "bugas": {
+    "nome": "Lucas Henrique Damasceno Fernandes",
+    "usuario": "bugas",
+    "data_cadastro": "2025-11-14"
   }
 }

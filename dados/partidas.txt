@@ -37,5 +37,45 @@
     "pontuacao": 0,
     "resultado": "Derrota",
     "data": "2025-11-07"
+  },
+  {
+    "id": 3,
+    "jogador": "bugas",
+    "numero_secreto": 97,
+    "tentativas": [
+      9,
+      17,
+      40,
+      80,
+      90,
+      99,
+      95,
+      96,
+      97
+    ],
+    "total_tentativas": 9,
+    "pontuacao": 20,
+    "resultado": "Vitória",
+    "data": "2025-11-14"
+  },
+  {
+    "id": 4,
+    "jogador": "bugas",
+    "numero_secreto": 1,
+    "tentativas": [
+      100,
+      70,
+      50,
+      30,
+      20,
+      15,
+      6,
+      2,
+      1
+    ],
+    "total_tentativas": 9,
+    "pontuacao": 20,
+    "resultado": "Vitória",
+    "data": "2025-11-14"
   }
 ]

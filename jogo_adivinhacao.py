@@ -18,6 +18,7 @@ import json
 import os
 import random
 from datetime import datetime
+from functools import reduce
 from typing import Dict, List, Tuple, Optional
 
 # ============================================
@@ -28,6 +29,9 @@ MAX_NUMERO = 100
 MAX_TENTATIVAS = 10
 PONTUACAO_BASE = 100
 PENALIDADE_TENTATIVA = 10  # desconto por tentativa usada (após a primeira)
+
+# Exemplo de uso de tuple (Módulo 1)
+INTERVALO_PADRAO: Tuple[int, int] = (MIN_NUMERO, MAX_NUMERO)
 
 # Pastas/arquivos
 BASE_DADOS = os.path.join(os.getcwd(), "dados")
@@ -45,11 +49,13 @@ contador_partidas: int = 1
 # ============================================
 
 def _garantir_pastas() -> None:
+    """Garante que as pastas de dados e relatórios existam."""
     os.makedirs(BASE_DADOS, exist_ok=True)
     os.makedirs(BASE_RELATORIOS, exist_ok=True)
 
 
 def _carregar_arquivos() -> None:
+    """Carrega jogadores e partidas dos arquivos JSON simples."""
     global jogadores, partidas, contador_partidas
     _garantir_pastas()
 
@@ -58,6 +64,7 @@ def _carregar_arquivos() -> None:
             with open(ARQ_JOGADORES, "r", encoding="utf-8") as f:
                 jogadores = json.load(f)
         except Exception:
+            # Tratamento simples: se der erro, começa vazio
             jogadores = {}
     else:
         jogadores = {}
@@ -79,11 +86,13 @@ def _carregar_arquivos() -> None:
 
 
 def _salvar_jogadores() -> None:
+    """Salva o dicionário de jogadores em arquivo."""
     with open(ARQ_JOGADORES, "w", encoding="utf-8") as f:
         json.dump(jogadores, f, ensure_ascii=False, indent=2)
 
 
 def _salvar_partidas() -> None:
+    """Salva a lista de partidas em arquivo."""
     with open(ARQ_PARTIDAS, "w", encoding="utf-8") as f:
         json.dump(partidas, f, ensure_ascii=False, indent=2)
 
@@ -136,7 +145,11 @@ essa_entrada_invalida = "Entrada inválida. Digite um número inteiro no interva
 
 
 def validar_numero(entrada: str) -> Optional[int]:
-    """Valida se entrada é um número no intervalo permitido."""
+    """Valida se entrada é um número no intervalo permitido.
+
+    Returns:
+        int ou None se for inválido.
+    """
     try:
         numero = int(entrada)
         if MIN_NUMERO <= numero <= MAX_NUMERO:
@@ -147,6 +160,7 @@ def validar_numero(entrada: str) -> Optional[int]:
 
 
 def exibir_dica(numero_escolhido: int, numero_secreto: int) -> None:
+    """Exibe dica simples se o número é maior ou menor que o secreto."""
     if numero_escolhido < numero_secreto:
         print("➡️  Tente um número MAIOR.")
     elif numero_escolhido > numero_secreto:
@@ -154,7 +168,10 @@ def exibir_dica(numero_escolhido: int, numero_secreto: int) -> None:
 
 
 def calcular_pontuacao(total_tentativas: int, vitoria: bool) -> int:
-    """Pontuação: 100 - (tentativas-1)*10. Derrota => 0. Mínimo 0."""
+    """Calcula pontuação da partida.
+
+    Pontuação: 100 - (tentativas-1)*10. Derrota => 0. Mínimo 0.
+    """
     if not vitoria:
         return 0
     pontos = PONTUACAO_BASE - max(0, total_tentativas - 1) * PENALIDADE_TENTATIVA
@@ -162,7 +179,14 @@ def calcular_pontuacao(total_tentativas: int, vitoria: bool) -> int:
 
 
 def jogar_partida(usuario: str) -> Dict:
-    """Executa uma partida interativa no terminal."""
+    """Executa uma partida interativa no terminal.
+
+    Args:
+        usuario: usuário logado
+
+    Returns:
+        dict: dados da partida jogada
+    """
     global contador_partidas
 
     if usuario not in jogadores:
@@ -170,7 +194,7 @@ def jogar_partida(usuario: str) -> Dict:
 
     numero_secreto = gerar_numero_secreto()
     tentativas: List[int] = []
-    vitoria = False
+    vitoria: bool = False  # uso explícito de bool
 
     print(f"\n🎯 Novo jogo! Adivinhe um número entre {MIN_NUMERO} e {MAX_NUMERO}.")
     for i in range(1, MAX_TENTATIVAS + 1):
@@ -216,10 +240,12 @@ def jogar_partida(usuario: str) -> Dict:
 # ============================================
 
 def _partidas_do_usuario(usuario: str) -> List[Dict]:
+    """Retorna todas as partidas de um usuário (list comprehension)."""
     return [p for p in partidas if p.get("jogador") == usuario]
 
 
 def calcular_taxa_vitoria(usuario: str) -> float:
+    """Calcula taxa de vitórias (%) de um jogador."""
     ps = _partidas_do_usuario(usuario)
     if not ps:
         return 0.0
@@ -228,6 +254,7 @@ def calcular_taxa_vitoria(usuario: str) -> float:
 
 
 def media_tentativas(usuario: str) -> float:
+    """Calcula média de tentativas por partida de um jogador."""
     ps = _partidas_do_usuario(usuario)
     if not ps:
         return 0.0
@@ -235,6 +262,7 @@ def media_tentativas(usuario: str) -> float:
 
 
 def calcular_estatisticas_jogador(usuario: str) -> Dict:
+    """Calcula estatísticas completas de um jogador."""
     ps = _partidas_do_usuario(usuario)
     dados = jogadores.get(usuario, {})
     total = len(ps)
@@ -259,11 +287,47 @@ def calcular_estatisticas_jogador(usuario: str) -> Dict:
     }
 
 
+def estatisticas_resumidas() -> Dict[str, int]:
+    """Exemplo de dict comprehension.
+
+    Retorna {usuario: total_partidas}
+    """
+    return {user: len(_partidas_do_usuario(user)) for user in jogadores}
+
+
+def estatisticas_funcionais(usuario: str) -> Dict[str, float]:
+    """Demonstra uso de map, filter, reduce e lambda.
+
+    Retorna informações funcionais sobre as pontuações do usuário.
+    """
+    ps = _partidas_do_usuario(usuario)
+
+    # map: extrair pontuações
+    pontuacoes = list(map(lambda p: p.get("pontuacao", 0), ps))
+
+    # filter: considerar apenas vitórias
+    vitorias = list(filter(lambda p: p.get("resultado") == "Vitória", ps))
+
+    # reduce: somatório das pontuações
+    soma_total = reduce(lambda a, b: a + b, pontuacoes, 0)
+
+    media = soma_total / len(pontuacoes) if pontuacoes else 0
+    maior = max(pontuacoes) if pontuacoes else 0
+
+    return {
+        "soma_total": soma_total,
+        "media_pontuacao": round(media, 1),
+        "maior_pontuacao": maior,
+        "total_vitorias": len(vitorias),
+    }
+
+
 # ============================================
 # RANKINGS
 # ============================================
 
 def ranking_pontuacao_media(limite: int = 10) -> List[Tuple[str, float]]:
+    """Gera ranking por pontuação média."""
     resultados: List[Tuple[str, float]] = []
     for usuario in jogadores.keys():
         ps = _partidas_do_usuario(usuario)
@@ -276,27 +340,41 @@ def ranking_pontuacao_media(limite: int = 10) -> List[Tuple[str, float]]:
 
 
 def ranking_vitorias(limite: int = 10) -> List[Tuple[str, int]]:
+    """Gera ranking por número de vitórias."""
     resultados: List[Tuple[str, int]] = []
     for usuario in jogadores.keys():
-        vitorias = sum(1 for p in _partidas_do_usuario(usuario) if p["resultado"] == "Vitória")
+        ps = _partidas_do_usuario(usuario)
+        vitorias = sum(1 for p in ps if p["resultado"] == "Vitória")
         resultados.append((usuario, vitorias))
     resultados.sort(key=lambda x: x[1], reverse=True)
     return resultados[:limite]
 
 
 def ranking_melhor_pontuacao(limite: int = 10) -> List[Tuple[str, int]]:
+    """Gera ranking por melhor pontuação única."""
     resultados: List[Tuple[str, int]] = []
     for usuario in jogadores.keys():
-        melhor = max((p.get("pontuacao", 0) for p in _partidas_do_usuario(usuario)), default=0)
+        melhor = max(
+            (p.get("pontuacao", 0) for p in _partidas_do_usuario(usuario)),
+            default=0,
+        )
         resultados.append((usuario, melhor))
     resultados.sort(key=lambda x: x[1], reverse=True)
     return resultados[:limite]
 
 
 def ranking_menor_tentativas(limite: int = 10) -> List[Tuple[str, int]]:
+    """Gera ranking por menor número de tentativas nas vitórias."""
     resultados: List[Tuple[str, int]] = []
     for usuario in jogadores.keys():
-        melhor = min((p.get("total_tentativas", MAX_TENTATIVAS) for p in _partidas_do_usuario(usuario) if p.get("resultado") == "Vitória"), default=MAX_TENTATIVAS)
+        melhor = min(
+            (
+                p.get("total_tentativas", MAX_TENTATIVAS)
+                for p in _partidas_do_usuario(usuario)
+                if p.get("resultado") == "Vitória"
+            ),
+            default=MAX_TENTATIVAS,
+        )
         resultados.append((usuario, melhor))
     resultados.sort(key=lambda x: x[1])
     return resultados[:limite]
@@ -307,12 +385,13 @@ def ranking_menor_tentativas(limite: int = 10) -> List[Tuple[str, int]]:
 # ============================================
 
 def exibir_estatisticas_jogador(usuario: str) -> None:
+    """Exibe e salva estatísticas detalhadas de um jogador."""
     stats = calcular_estatisticas_jogador(usuario)
     if not stats.get(usuario):
         print("Nenhum dado para este jogador.")
         return
     s = stats[usuario]
-    print("\n📈 Estatísticas —", s["nome"]) 
+    print("\n📈 Estatísticas —", s["nome"])
     print(f"Total de partidas: {s['total_partidas']}")
     print(f"Vitórias: {s['vitorias']} | Derrotas: {s['derrotas']}")
     print(f"Taxa de vitória: {s['taxa_vitoria']}%")
@@ -320,14 +399,28 @@ def exibir_estatisticas_jogador(usuario: str) -> None:
     print(f"Melhor pontuação: {s['melhor_pontuacao']}")
     print(f"Pontuação total: {s['pontuacao_total']}")
 
+    # Exemplo de uso das estatísticas funcionais (lambda/map/filter/reduce)
+    func = estatisticas_funcionais(usuario)
+    print("\n📊 Estatísticas funcionais:")
+    print(f"Soma total das pontuações: {func['soma_total']}")
+    print(f"Média de pontuação: {func['media_pontuacao']}")
+    print(f"Maior pontuação: {func['maior_pontuacao']}")
+    print(f"Total de vitórias (filter): {func['total_vitorias']}")
+
     # salva relatório individual
     _garantir_pastas()
     caminho = os.path.join(BASE_RELATORIOS, f"estatisticas_{usuario}.txt")
     with open(caminho, "w", encoding="utf-8") as f:
-        json.dump(stats, f, ensure_ascii=False, indent=2)
+        json.dump(
+            {"estatisticas": stats, "funcionais": func},
+            f,
+            ensure_ascii=False,
+            indent=2,
+        )
 
 
 def exibir_ranking() -> None:
+    """Exibe rankings principais e salva em relatório geral."""
     print("\n🏆 Ranking — Pontuação média")
     for i, (u, m) in enumerate(ranking_pontuacao_media(), start=1):
         print(f"{i:2d}. {u:12s}  {m:>6.2f}")
@@ -358,10 +451,18 @@ def exibir_ranking() -> None:
 
 
 def historico_partidas(usuario: str, limite: int = 10) -> List[Dict]:
+    """Retorna histórico recente de partidas de um jogador (ordenado)."""
     ps = _partidas_do_usuario(usuario)
     # Ordena por data e id (mais recentes primeiro)
-    ps.sort(key=lambda p: (p.get("data", ""), p.get("id", 0)), reverse=True)
-    return ps[:limite]
+    ps_ordenadas = sorted(
+        ps, key=lambda p: (p.get("data", ""), p.get("id", 0)), reverse=True
+    )
+    return ps_ordenadas[:limite]
+
+
+def datas_disponiveis() -> set:
+    """Exemplo de uso de set: retorna conjunto de datas com partidas."""
+    return {p.get("data") for p in partidas}
 
 
 # ============================================
@@ -369,6 +470,7 @@ def historico_partidas(usuario: str, limite: int = 10) -> List[Dict]:
 # ============================================
 
 def _menu() -> None:
+    """Exibe o menu principal do sistema."""
     print("\n===== Sistema de Jogo de Adivinhação =====")
     print("1) Cadastrar jogador")
     print("2) Login")
@@ -377,10 +479,12 @@ def _menu() -> None:
     print("5) Exibir ranking")
     print("6) Histórico de partidas")
     print("7) Configurações (intervalo/limites)")
+    print("8) Datas disponíveis (exemplo de set)")
     print("0) Sair")
 
 
 def _configuracoes() -> None:
+    """Permite alterar intervalo de números e limite de tentativas."""
     global MIN_NUMERO, MAX_NUMERO, MAX_TENTATIVAS
     try:
         print(f"Intervalo atual: {MIN_NUMERO}..{MAX_NUMERO} | Máx tentativas: {MAX_TENTATIVAS}")
@@ -403,6 +507,7 @@ def _configuracoes() -> None:
 # ============================================
 
 def main() -> None:
+    """Função principal: laço do menu interativo."""
     _carregar_arquivos()
     usuario_logado: Optional[str] = None
 
@@ -462,6 +567,16 @@ def main() -> None:
 
         elif op == "7":
             _configuracoes()
+
+        elif op == "8":
+            # Exemplo de uso de set no menu
+            datas = datas_disponiveis()
+            if not datas:
+                print("Nenhuma partida registrada ainda.")
+            else:
+                print("📅 Datas com partidas registradas:")
+                for d in sorted(datas):
+                    print("-", d)
 
         elif op == "0":
             print("Até logo! 👋")

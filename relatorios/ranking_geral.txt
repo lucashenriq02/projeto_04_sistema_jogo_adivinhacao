@@ -2,12 +2,20 @@
   "ranking_pontuacao_media": [
     [
       "bubugas",
-      40.0
+      20.0
+    ],
+    [
+      "bugas",
+      20.0
     ]
   ],
   "ranking_vitorias": [
     [
       "bubugas",
+      1
+    ],
+    [
+      "bugas",
       1
     ]
   ],
@@ -15,12 +23,20 @@
     [
       "bubugas",
       40
+    ],
+    [
+      "bugas",
+      20
     ]
   ],
   "ranking_menor_tentativas": [
     [
       "bubugas",
       7
+    ],
+    [
+      "bugas",
+      9
     ]
   ]
 }

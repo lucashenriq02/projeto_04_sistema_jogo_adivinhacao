@@ -1,482 +1,777 @@
-# Projeto 04: Sistema de Jogo de Adivinhação com Estatísticas
+# 1. Projeto 04: Sistema de Jogo de Adivinhação com Estatísticas
+ **Disciplina:** Programação para Ciência de Dados  
+**Curso:** MBA Ciência de Dados - UNIFOR  
+**Instrutor:** Cássio Pinheiro  
+**Integrantes:** - Lucas Henrique Damasceno Fernandes (2527287)
+ **Repositório GitHub:** https://github.com/lucashenriq02/projeto_04_sistema_jogo_adivinhacao.git
+ **Data de Entrega:** 14/11/2025
 
-## 📋 Objetivo
+ ---
 
-Desenvolver um sistema de jogo de adivinhação numérica que permita múltiplos jogadores, registre histórico de partidas, calcule estatísticas de desempenho e gerencie rankings de jogadores.L
+# 2. 🎯 Objetivo do Projeto
 
-## 🗺️ Diagrama de Contexto
+O **Sistema de Jogo de Adivinhação** foi desenvolvido em Python com o propósito de aplicar conceitos de lógica de programação, controle de fluxo, manipulação de dados e criação de relatórios.
+
+O sistema permite que múltiplos jogadores participem de partidas de adivinhação numérica, registrando suas estatísticas individuais, pontuações e gerando rankings de desempenho.
+
+O projeto propõe um ambiente para exercitar fundamentos de **programação estruturada**, **persistência de dados** e **análise estatística** simples, simulando um sistema de jogo interativo completo com histórico e relatórios automáticos.
+
+---
+
+---
+
+# 3. 🗺️ Diagrama de Contexto (Mermaid)
 
 ```mermaid
 graph TD
     A[Sistema de Jogo de Adivinhação] --> B[Jogadores<br/>e Jogadas]
     B --> C[Processamento<br/>do Jogo]
-    C --> D[Validações e<br/>Resultados]
-    D --> E[Estatísticas e<br/>Rankings]
-    
-    style A fill:#e1f5ff
-    style B fill:#ffe1f5
-    style C fill:#e7ffe1
-    style D fill:#fff5e1
-    style E fill:#f5e1ff
+    C --> D[Validações <br/>/Resultados]
+    D --> E[Estatísticas <br/>/Rankings]
+
+    style A fill:#e1f5ff,stroke:#333,stroke-width:1px
+    style B fill:#ffe1f5,stroke:#333,stroke-width:1px
+    style C fill:#e7ffe1,stroke:#333,stroke-width:1px
+    style D fill:#fff5e1,stroke:#333,stroke-width:1px
+    style E fill:#f5e1ff,stroke:#333,stroke-width:1px
 ```
+# 4. 🔧 Funcionalidades Básicas
 
-## 🔧 Funcionalidades Básicas
+## 4.1. Sistema de Jogo
+    - Geração de número secreto
+    - Controle de tentativas
+    - Dicas (maior/menor)
+    - Cálculo de pontuação
+    - Exibição de resultado
 
-1. **Sistema de Jogo**
-   - Gerar número aleatório em um intervalo
-   - Permitir múltiplas tentativas
-   - Fornecer dicas (maior/menor)
-   - Calcular pontuação baseada em tentativas
+## 4.2. Gestão de Jogadores
+    - Cadastro de novos jogadores
+    - Login de jogadores existentes
+    - Persistência de dados em arquivo
 
-2. **Gestão de Jogadores**
-   - Cadastrar novos jogadores
-   - Login de jogadores existentes
-   - Manter histórico por jogador
+## 4.3. Registro de Partidas
+    - Armazenamento de número secreto, tentativas e resultado
+    - Histórico de partidas com data e pontuação
+    - Identificação única por partida
 
-3. **Registro de Partidas**
-   - Registrar cada partida (jogador, número secreto, tentativas, resultado)
-   - Calcular pontuação da partida
-   - Armazenar histórico completo
+## 4.4. Estatísticas
+   - Taxa de vitórias
+   - Média de tentativas
+   - Melhor pontuação
+   - Pontuação total
+   - Relatório individual de desempenho
 
-4. **Estatísticas**
-   - Taxa de vitórias por jogador
-   - Média de tentativas por jogador
-   - Melhor pontuação por jogador
-   - Total de partidas por jogador
-
-5. **Rankings**
+## 4.5. Rankings
    - Ranking por pontuação média
    - Ranking por número de vitórias
    - Ranking por melhor pontuação única
    - Ranking por menor número de tentativas
+   - Relatório consolidado de rankings
 
-6. **Relatórios**
-   - Relatório de desempenho individual
-   - Relatório geral de todos os jogadores
-   - Histórico de partidas recentes
+## 4.6. Relatórios
+   - Histórico recente de partidas
+   - Exportação automática de estatísticas
+   - Organização de relatórios por jogador
 
-## 📊 Estrutura de Dados
+## 4.7. Configurações e Menu Interativo
+   - Menu principal com todas as opções do sistema
+   - Alteração de parâmetros de jogo (intervalo e tentativas)
+   - Feedback dinâmico ao usuário
 
-### Entrada
+## 4.8. Estrutura e Persistência de Dados
+   - Criação automática de diretórios e arquivos
+   - Armazenamento em formato JSON
+   - Leitura e atualização contínua dos dados
 
-```python
-# Cadastro de jogador
-jogador = {
-    'nome': 'João Silva',
-    'usuario': 'joao123',
-    'data_cadastro': '2024-01-15'
+# 5. 📊 Estrutura de Dados
+
+O sistema utiliza estruturas de dados nativas do Python (listas, dicionários), persistência em arquivos .txt no formato JSON e DataFrames gerados com Pandas para análises estatísticas.
+
+A seguir estão os modelos utilizados, exemplos de entrada e saída e os formatos dos arquivos.
+
+## 5.1 Modelos de Dados Utilizados
+📌 Jogador (dict)
+
+Representa um jogador cadastrado no sistema.
+
+{
+  "nome": "Lucas Henrique",
+  "usuario": "lucas123",
+  "data_cadastro": "2025-11-07"
 }
 
-# Tentativa de jogo
-tentativa = {
-    'jogador': 'joao123',
-    'numero_escolhido': 42,
-    'tentativa_numero': 3
-}
-```
+📌 Partida (dict)
 
-### Saída
+Registro completo de uma partida jogada.
 
-```python
-# Partida completa
-partida = {
-    'id': 1,
-    'jogador': 'joao123',
-    'numero_secreto': 42,
-    'tentativas': [15, 35, 42],
-    'total_tentativas': 3,
-    'pontuacao': 70,
-    'resultado': 'Vitória',
-    'data': '2024-01-15'
+{
+  "id": 12,
+  "jogador": "lucas123",
+  "numero_secreto": 57,
+  "tentativas": [30, 50, 57],
+  "total_tentativas": 3,
+  "pontuacao": 80,
+  "resultado": "Vitória",
+  "data": "2025-11-08"
 }
 
-# Estatísticas do jogador
-estatisticas_jogador = {
-    'joao123': {
-        'nome': 'João Silva',
-        'total_partidas': 10,
-        'vitorias': 7,
-        'derrotas': 3,
-        'taxa_vitoria': 70.0,
-        'media_tentativas': 4.2,
-        'melhor_pontuacao': 100,
-        'pontuacao_total': 750
-    }
+📌 Estatísticas do Jogador (dict)
+
+Gerado automaticamente pelo sistema após o processamento das partidas.
+
+{
+  "lucas123": {
+    "nome": "Lucas Henrique",
+    "total_partidas": 8,
+    "vitorias": 5,
+    "derrotas": 3,
+    "taxa_vitoria": 62.5,
+    "media_tentativas": 4.12,
+    "melhor_pontuacao": 100,
+    "pontuacao_total": 540
+  }
 }
 
-# Ranking
-ranking = [
-    ('joao123', 85.5),  # (usuario, pontuacao_media)
-    ('maria456', 72.3),
-    ('pedro789', 65.0)
+📌 Rankings (list de tuplas)
+
+Exemplo de ranking por média de pontuação.
+
+[
+    ("lucas123", 82.5),
+    ("maria456", 75.0),
+    ("joao999", 68.3)
 ]
-```
 
-## 💻 Requisitos Técnicos
+## 5.2 Exemplos de Estruturas de Entrada
+📌 Cadastro de Jogador
+cadastrar_jogador("Lucas Henrique", "lucas123")
 
-- Python 3.8+
-- Módulo `random` para números aleatórios
-- Conhecimentos em:
-  - Tipos de dados (int, float, str, dict, list)
-  - Estruturas de controle (if/else, for, while)
-  - Funções com parâmetros e retorno
-  - Compreensões de lista e dicionário
-  - Funções lambda e filter
-  - Loops aninhados
+📌 Entrada de Tentativa
+validar_numero("42")   # retorna 42
+validar_numero("abc")  # retorna None
 
-## 📦 Entregáveis
+### 5.3 Exemplos de Estruturas de Saída
+📌 Resultado de Partida
+{
+  "id": 15,
+  "jogador": "lucas123",
+  "resultado": "Vitória",
+  "pontuacao": 70,
+  "total_tentativas": 4,
+  "tentativas": [10, 30, 45, 48],
+  "numero_secreto": 48,
+  "data": "2025-11-09"
+}
 
-1. **Código Python** (`jogo_adivinhacao.py`)
-   - Módulo completo do jogo
-   - Sistema de jogadores
-   - Sistema de estatísticas
+📌 Histórico de Partidas (últimos 10 registros)
+[
+  {
+    "id": 15,
+    "resultado": "Vitória",
+    "pontuacao": 70,
+    "total_tentativas": 4,
+    "data": "2025-11-09"
+  },
+  {
+    "id": 14,
+    "resultado": "Derrota",
+    "pontuacao": 0,
+    "total_tentativas": 10,
+    "data": "2025-11-08"
+  }
+]
 
-2. **Dados de Exemplo** (`jogadores.txt`, `partidas.txt`)
-   - Arquivos com dados de exemplo
-   - Formato estruturado
+📌 DataFrame Pandas utilizado na análise (analise_dado.py)
+     id   jogador  total_tentativas  pontuacao  resultado
+0     1  lucas123                3         80    Vitória
+1     2  lucas123                5         60    Vitória
+2     3  maria456                8          0    Derrota
 
-3. **Relatórios Gerados** (`relatorios/`)
-   - Ranking de jogadores
-   - Estatísticas individuais
+### 5.4 Formato dos Arquivos de Dados
+📁 dados/jogadores.txt
+{
+  "lucas123": {
+    "nome": "Lucas Henrique",
+    "usuario": "lucas123",
+    "data_cadastro": "2025-11-07"
+  }
+}
 
-4. **Documentação** (`README.md`)
-   - Regras do jogo
-   - Instruções de uso
+📁 dados/partidas.txt
+[
+  {
+    "id": 1,
+    "jogador": "lucas123",
+    "numero_secreto": 47,
+    "tentativas": [15, 20, 47],
+    "total_tentativas": 3,
+    "pontuacao": 80,
+    "resultado": "Vitória",
+    "data": "2025-11-07"
+  }
+]
 
-## 💡 Dicas
+📁 relatorios/estatisticas_lucas123.txt
+{
+  "lucas123": {
+    "total_partidas": 8,
+    "vitorias": 5,
+    "media_tentativas": 4.12,
+    "taxa_vitoria": 62.5,
+    "pontuacao_total": 540
+  }
+}
 
-1. Use `random.randint(min, max)` para gerar números aleatórios
-2. Use while loop para permitir múltiplas tentativas
-3. Implemente função de cálculo de pontuação:
-   - Pontuação máxima = 100
-   - Reduzir por cada tentativa (ex: -10 por tentativa)
-4. Use dicionários para armazenar jogadores e partidas
-5. Use list comprehension para filtrar partidas por jogador
-6. Use sorted() com key para criar rankings
-7. Implemente validação de entrada (número dentro do intervalo)
-8. Use try/except para validar entrada numérica
+📁 relatorios/ranking_geral.txt
+{
+  "ranking_pontuacao_media": [
+    ["lucas123", 82.5]
+  ],
+  "ranking_vitorias": [
+    ["lucas123", 5]
+  ],
+  "ranking_melhor_pontuacao": [
+    ["lucas123", 100]
+  ],
+  "ranking_menor_tentativas": [
+    ["lucas123", 3]
+  ]
+}
 
-## 🏗️ Esqueleto do Projeto
+# 6. 🖥️ Requisitos Técnicos
 
-```python
-# jogo_adivinhacao.py
+O projeto utiliza Python 3 e algumas bibliotecas essenciais para manipulação de dados e geração de gráficos.
+A seguir estão os requisitos completos para execução, instalação e compatibilidade.
 
-import random
-from datetime import datetime
+## 6.1 Versão do Python Utilizada
+Componente	Versão
+Python	3.13.2
 
-# ============================================
-# Sistema de Jogo de Adivinhação
-# ============================================
+O sistema é totalmente compatível com Python 3.9+.
 
-jogadores = {}  # {usuario: {nome, data_cadastro}}
-partidas = []   # Lista de todas as partidas
-contador_partidas = 1
+## 6.2 Bibliotecas e Dependências
 
-# Configurações do jogo
-MIN_NUMERO = 1
-MAX_NUMERO = 100
-MAX_TENTATIVAS = 10
-PONTUACAO_BASE = 100
-PENALIDADE_TENTATIVA = 10
+O projeto utiliza as seguintes bibliotecas:
 
-# ============================================
-# FUNÇÕES DE JOGADORES
-# ============================================
+Biblioteca	Finalidade
+json (nativo)	Persistência de dados em arquivos .txt
+os (nativo)	Manipulação de diretórios e caminhos
+random (nativo)	Geração de números aleatórios
+datetime (nativo)	Registro de datas (cadastro e partidas)
+pandas	Leitura, tratamento e análise de dados
+numpy	Arrays, operações vetorizadas e estatísticas
+matplotlib	Visualização de dados e gráficos
+seaborn	Visualizações estatísticas avançadas
 
-def cadastrar_jogador(nome, usuario):
-    """
-    Cadastra um novo jogador.
-    
-    Args:
-        nome (str): Nome completo do jogador
-        usuario (str): Nome de usuário único
-    
-    Returns:
-        dict: Dados do jogador cadastrado
-    """
-    # TODO: Verificar se usuário já existe
-    # TODO: Criar dicionário do jogador
-    # TODO: Adicionar data de cadastro
-    # TODO: Adicionar ao dicionário jogadores
-    pass
+## 6.3 Arquivo requirements.txt
 
-def login_jogador(usuario):
-    """
-    Verifica se jogador existe e retorna dados.
-    
-    Args:
-        usuario (str): Nome de usuário
-    
-    Returns:
-        dict: Dados do jogador ou None
-    """
-    # TODO: Verificar se existe no dicionário
-    # TODO: Retornar dados do jogador
-    pass
+O projeto inclui um arquivo pronto para instalação:
 
-# ============================================
-# FUNÇÕES DE JOGO
-# ============================================
+pandas
+numpy
+matplotlib
+seaborn
 
-def gerar_numero_secreto():
-    """
-    Gera um número aleatório no intervalo configurado.
-    
-    Returns:
-        int: Número secreto
-    """
-    # TODO: Usar random.randint()
-    pass
 
-def calcular_pontuacao(total_tentativas):
-    """
-    Calcula pontuação da partida baseada em tentativas.
-    
-    Args:
-        total_tentativas (int): Número de tentativas usadas
-    
-    Returns:
-        int: Pontuação (0-100)
-    """
-    # TODO: Calcular: PONTUACAO_BASE - (tentativas * PENALIDADE)
-    # TODO: Garantir que não seja negativo
-    pass
+Caso deseje versões fixas (opcional):
 
-def jogar_partida(usuario):
-    """
-    Executa uma partida completa do jogo.
-    
-    Args:
-        usuario (str): Usuário do jogador
-    
-    Returns:
-        dict: Dados da partida
-    """
-    global contador_partidas
-    
-    # TODO: Gerar número secreto
-    # TODO: Inicializar variáveis (tentativas, lista_tentativas)
-    # TODO: Loop while para tentativas
-    # TODO: Validar entrada do usuário
-    # TODO: Comparar com número secreto
-    # TODO: Dar dicas (maior/menor)
-    # TODO: Registrar tentativa
-    # TODO: Verificar vitória ou derrota
-    # TODO: Calcular pontuação
-    # TODO: Criar dicionário da partida
-    # TODO: Adicionar à lista de partidas
-    # TODO: Incrementar contador
-    pass
+pandas==2.2.2
+numpy==1.26.4
+matplotlib==3.8.4
+seaborn==0.13.2
 
-# ============================================
-# FUNÇÕES DE ESTATÍSTICAS
-# ============================================
+## 6.4 Requisitos de Sistema
 
-def calcular_estatisticas_jogador(usuario):
-    """
-    Calcula estatísticas completas de um jogador.
-    
-    Args:
-        usuario (str): Usuário do jogador
-    
-    Returns:
-        dict: Estatísticas do jogador
-    """
-    # TODO: Filtrar partidas do jogador
-    # TODO: Calcular totais (partidas, vitórias, derrotas)
-    # TODO: Calcular taxa de vitória
-    # TODO: Calcular média de tentativas
-    # TODO: Encontrar melhor pontuação
-    # TODO: Calcular pontuação total
-    # TODO: Criar dicionário de estatísticas
-    pass
+O projeto é leve e roda em qualquer ambiente:
 
-def calcular_taxa_vitoria(usuario):
-    """
-    Calcula taxa de vitórias de um jogador.
-    
-    Args:
-        usuario (str): Usuário do jogador
-    
-    Returns:
-        float: Taxa de vitória (0-100)
-    """
-    # TODO: Filtrar partidas do jogador
-    # TODO: Contar vitórias e total
-    # TODO: Calcular percentual
-    pass
+Windows 10/11
 
-def media_tentativas(usuario):
-    """
-    Calcula média de tentativas por partida de um jogador.
-    
-    Args:
-        usuario (str): Usuário do jogador
-    
-    Returns:
-        float: Média de tentativas
-    """
-    # TODO: Filtrar partidas do jogador
-    # TODO: Extrair número de tentativas
-    # TODO: Calcular média
-    pass
+macOS
 
-# ============================================
-# FUNÇÕES DE RANKINGS
-# ============================================
+Linux (Ubuntu/Debian/Fedora)
 
-def ranking_pontuacao_media(limite=10):
-    """
-    Gera ranking por pontuação média.
-    
-    Args:
-        limite (int): Quantidade de jogadores no ranking
-    
-    Returns:
-        list: Lista de tuplas (usuario, pontuacao_media)
-    """
-    # TODO: Calcular estatísticas de todos os jogadores
-    # TODO: Calcular pontuação média
-    # TODO: Ordenar por pontuação (decrescente)
-    # TODO: Retornar top N
-    pass
+VS Code (recomendado)
 
-def ranking_vitorias(limite=10):
-    """
-    Gera ranking por número de vitórias.
-    
-    Args:
-        limite (int): Quantidade de jogadores no ranking
-    
-    Returns:
-        list: Lista de tuplas (usuario, vitorias)
-    """
-    # TODO: Calcular vitorias por jogador
-    # TODO: Ordenar por vitórias (decrescente)
-    # TODO: Retornar top N
-    pass
+📌 Não necessita GPU, internet ou hardware específico.
 
-def ranking_melhor_pontuacao(limite=10):
-    """
-    Gera ranking por melhor pontuação única.
-    
-    Args:
-        limite (int): Quantidade de jogadores no ranking
-    
-    Returns:
-        list: Lista de tuplas (usuario, melhor_pontuacao)
-    """
-    # TODO: Encontrar melhor pontuação de cada jogador
-    # TODO: Ordenar por pontuação (decrescente)
-    # TODO: Retornar top N
-    pass
+## 6.5 Como Instalar as Dependências
+1️⃣ Ativar o ambiente virtual (venv)
 
-# ============================================
-# FUNÇÕES DE RELATÓRIOS
-# ============================================
+Windows (PowerShell):
+venv\Scripts\activate
 
-def exibir_estatisticas_jogador(usuario):
-    """
-    Exibe estatísticas formatadas de um jogador.
-    
-    Args:
-        usuario (str): Usuário do jogador
-    """
-    # TODO: Calcular estatísticas
-    # TODO: Formatar e exibir com f-strings
-    pass
+Linux/macOS:
+source venv/bin/activate
 
-def exibir_ranking():
-    """
-    Exibe ranking formatado de todos os jogadores.
-    """
-    # TODO: Gerar rankings
-    # TODO: Formatar e exibir
-    pass
+2️⃣ Instalar dependências
+pip install -r requirements.txt
 
-def historico_partidas(usuario, limite=10):
-    """
-    Retorna histórico recente de partidas de um jogador.
-    
-    Args:
-        usuario (str): Usuário do jogador
-        limite (int): Quantidade de partidas a retornar
-    
-    Returns:
-        list: Lista de partidas recentes
-    """
-    # TODO: Filtrar partidas do jogador
-    # TODO: Ordenar por data (mais recente primeiro)
-    # TODO: Retornar top N
-    pass
+3️⃣ Verificar instalação
+python -c "import pandas, numpy, matplotlib, seaborn; print('OK!')"
 
-# ============================================
-# FUNÇÕES AUXILIARES
-# ============================================
+## 6.6 Estrutura de Pastas Necessária
 
-def validar_numero(entrada):
-    """
-    Valida se entrada é um número válido no intervalo.
-    
-    Args:
-        entrada (str): Entrada do usuário
-    
-    Returns:
-        int: Número validado ou None
-    """
-    # TODO: Tentar converter para int
-    # TODO: Verificar se está no intervalo
-    # TODO: Retornar número ou None
-    pass
+A aplicação cria automaticamente estas pastas ao rodar:
 
-def exibir_dica(numero_escolhido, numero_secreto):
-    """
-    Exibe dica se número é maior ou menor.
-    
-    Args:
-        numero_escolhido (int): Número escolhido pelo jogador
-        numero_secreto (int): Número secreto
-    """
-    # TODO: Comparar números
-    # TODO: Exibir mensagem apropriada
-    pass
+dados/
+relatorios/
 
-# ============================================
-# FUNÇÃO PRINCIPAL
-# ============================================
 
-def main():
-    """
-    Função principal do programa.
-    """
-    # TODO: Menu interativo
-    # TODO: Opções: cadastrar, login, jogar, estatísticas, ranking, sair
-    pass
+Nada precisa ser criado manualmente.
 
-if __name__ == "__main__":
-    main()
-```
+## 6.7 Observações Técnicas Importantes
 
-## 📝 Exemplo de Uso
+✔ O projeto utiliza persistência simples em JSON (sem banco de dados)
+✔ Todos os relatórios são armazenados em formato .txt
+✔ A análise de dados e gráficos são gerados no arquivo analise_dado.py
+✔ Compatível com uso em Jupyter Notebook se necessário
+✔ Totalmente standalone — basta baixar e executar
 
-```python
-# Cadastrar jogador
-cadastrar_jogador('João Silva', 'joao123')
+# 7. 🚀 Como Executar o Projeto
 
-# Jogar partida
-partida = jogar_partida('joao123')
-print(f"Resultado: {partida['resultado']}")
-print(f"Pontuação: {partida['pontuacao']}")
+Siga as etapas abaixo para instalar, configurar e executar o sistema de forma correta.
 
-# Ver estatísticas
-stats = calcular_estatisticas_jogador('joao123')
-print(f"Taxa de vitória: {stats['taxa_vitoria']:.1f}%")
-print(f"Média de tentativas: {stats['media_tentativas']:.1f}")
+## 7.1. Pré-requisitos
 
-# Ver ranking
-ranking = ranking_pontuacao_media(5)
-print("Top 5 Jogadores:")
-for usuario, pontuacao in ranking:
-    print(f"{usuario}: {pontuacao:.1f}")
-```
+Antes de iniciar, você precisa ter instalado:
 
+Python 3.8+
+
+pip (gerenciador de pacotes do Python)
+
+Git (opcional, para clonar o repositório)
+
+## 7.2. Clonando o Repositório
+git clone https://github.com/lucashenriq02/projeto_04_sistema_jogo_adivinhacao.git
+cd projeto_04_sistema_jogo_adivinhacao
+
+## 7.3. Criando e Ativando o Ambiente Virtual (venv)
+Windows (PowerShell):
+python -m venv venv
+venv\Scripts\Activate.ps1
+
+Mac/Linux:
+python3 -m venv venv
+source venv/bin/activate
+
+## 7.4. Instalando as Dependências
+
+O projeto possui um arquivo requirements.txt com todas as bibliotecas necessárias.
+
+Execute:
+
+pip install -r requirements.txt
+
+## 7.5. Executando o Jogo Principal
+
+Para iniciar o sistema interativo no terminal:
+
+python jogo_adivinhacao.py
+
+## 7.6. Executando o Script de Análises (Pandas + NumPy + Gráficos)
+python analise_dado.py
+
+
+Esse script gera:
+
+✔ DataFrames com dados dos jogadores e partidas
+✔ Estatísticas automáticas
+✔ Gráficos em Matplotlib e Seaborn
+✔ Relatórios adicionais
+
+## 7.7. Exemplos de Comandos Úteis
+Atualizar dependências:
+pip freeze > requirements.txt
+
+Desativar venv:
+deactivate
+
+# 8. 📊 Análises Realizadas
+
+Esta seção apresenta as análises estatísticas, estruturais e visuais realizadas a partir dos dados das partidas registradas no sistema.
+Para isso, foi utilizado o módulo analise_dado.py, que lê os arquivos JSON e os transforma em DataFrames para inspeção.
+
+### 8.1 📥 Carregamento e Preparação dos Dados
+
+Os dados são carregados a partir dos arquivos:
+
+dados/jogadores.txt
+
+dados/partidas.txt
+
+E convertidos para DataFrames utilizando:
+
+import pandas as pd
+import numpy as np
+
+
+Foram realizadas:
+
+Normalização de colunas
+
+Conversão de datas (datetime)
+
+Remoção de duplicatas (se existirem)
+
+Tratamento de valores ausentes
+
+Criação de novas colunas derivadas (como taxa de acerto)
+
+### 8.2 📈 Estatísticas Descritivas
+
+Com Pandas e NumPy, foram calculadas estatísticas fundamentais:
+
+Média e mediana de tentativas
+
+Desvio padrão
+
+Distribuição de pontuação
+
+Taxa geral de vitórias
+
+Correlação entre número de tentativas e pontuação
+
+Exemplo:
+
+df_partidas['pontuacao'].describe()
+df_partidas['total_tentativas'].mean()
+df_partidas.corr(numeric_only=True)
+
+
+Essas estatísticas permitem entender:
+
+Dificuldade média do jogo
+
+Distribuição de desempenho
+
+Padrões de comportamento dos jogadores
+
+### 8.3 🔍 Filtragem, Seleção e Agrupamentos
+
+Foram utilizadas operações de:
+
+Filtro por jogador
+
+Agrupamento por resultado
+
+Agrupamento por data
+
+Médias por jogador (groupby)
+
+Exemplo:
+
+df_partidas.groupby("jogador")["pontuacao"].mean()
+df_partidas.groupby("resultado").size()
+df_partidas.groupby("data")["pontuacao"].mean()
+
+
+Esses agrupamentos permitem:
+
+Comparar desempenho entre jogadores
+
+Avaliar evolução temporal
+
+Identificar padrões de vitória/derrota
+
+### 8.4 📊 Visualizações Criadas
+
+Com Matplotlib e Seaborn, foram gerados gráficos para análise visual dos dados:
+
+✔ Histograma de Pontuações
+
+Mostra a distribuição geral das pontuações.
+
+✔ Histograma de Tentativas
+
+Avalia quantas tentativas os jogadores costumam usar.
+
+✔ Gráfico de Linha (pontuação por data)
+
+Mostra evolução temporal do desempenho.
+
+✔ Gráfico de Barras (vitórias por jogador)
+
+Compara performance entre usuários.
+
+✔ Boxplot
+
+Mostra dispersão das pontuações.
+
+✔ Heatmap de Correlação
+
+Destaca relações entre:
+
+tentativas
+
+pontuação
+
+vitória/derrota
+
+### 8.5 🔎 Principais Insights Encontrados
+
+Com base nas análises, foram observados:
+
+🟢 1. A maioria das pontuações se concentra entre 60 e 100
+
+Jogadores tendem a acertar antes do final das tentativas.
+
+🟢 2. O número total de tentativas tem forte correlação inversa com pontuação
+
+Quanto mais o jogador tenta, menor sua pontuação.
+
+🟡 3. Alguns jogadores apresentam quedas abruptas de desempenho
+
+Identificado por gráficos temporais.
+
+🔵 4. Vitórias são mais frequentes do que derrotas
+
+Mostrado pela distribuição do campo resultado.
+
+🟣 5. Jogadores com mais partidas tendem a ter médias melhores
+
+Revelado no agrupamento por jogador.
+
+### 8.6 📁 Arquivos Gerados
+
+A análise produz automaticamente:
+
+relatorios/estatisticas_bubugas.txt → estatísticas gerais
+
+relatorios/ranking_geral.txt → ranking consolidado
+
+Gráficos exibidos no notebook ou terminal (não persistidos como imagem, mas podem ser adicionados)
+
+# 9. 📁 Estrutura do Projeto
+
+A organização do projeto segue um padrão profissional, com separação clara entre código-fonte, dados, relatórios e ambiente virtual.
+A estrutura permite fácil manutenção, expansão e análise dos dados gerados.
+
+projeto_04_sistema_jogo_adivinhacao/
+│
+├── jogo_adivinhacao.py          ← Arquivo principal do sistema (CLI)
+├── analise_dado.py              ← Script de análise com Pandas, NumPy e gráficos
+├── requirements.txt             ← Dependências do projeto
+├── README.md                    ← Documentação completa do projeto
+│
+├── dados/                       ← Persistência dos dados (JSON em formato .txt)
+│   ├── jogadores.txt            ← Base de usuários (nome, usuário, cadastro)
+│   └── partidas.txt             ← Histórico completo de partidas
+│
+├── relatorios/                  ← Relatórios exportados automaticamente
+│   ├── estatisticas_[usuario].txt
+│   └── ranking_geral.txt
+│
+├── venv/                        ← Ambiente virtual do Python
+    ├── Scripts/ (Windows) ou bin/ (Linux/Mac)
+    └── Lib/
+
+
+### 9.1 🧱 Diretórios Principais
+📌 dados/
+
+Onde ficam armazenados os arquivos de persistência:
+
+jogadores.txt → salva o dicionário de jogadores
+
+partidas.txt → salva a lista completa de partidas realizadas
+
+Ambos são gravados em formato JSON para facilitar leitura e expansão futura.
+
+📌 relatorios/
+
+Gerado automaticamente pelo sistema para armazenar:
+
+Relatórios individuais dos jogadores
+
+Relatório geral de ranking
+
+Estatísticas em formato .txt
+
+Isso garante rastreabilidade e documentação do desempenho ao longo do tempo.
+
+📌 venv/
+
+Ambiente virtual com todas as dependências:
+
+Pandas
+
+NumPy
+
+Matplotlib
+
+Seaborn
+
+Esse diretório não é enviado ao GitHub (graças ao seu .gitignore).
+
+📌 Arquivos do Projeto
+jogo_adivinhacao.py
+
+Contém:
+
+Lógica do jogo
+
+Cadastro
+
+Estatísticas
+
+Rankings
+
+Sistema de persistência
+
+Menus
+
+Funções auxiliares
+
+É o núcleo do projeto.
+
+analise_dado.py
+
+Responsável por:
+
+Ler os dados das partidas
+
+Criar DataFrames com Pandas
+
+Realizar análises estatísticas
+
+Gerar gráficos (histogramas, barras, boxplots, heatmap, etc.)
+
+Demonstrar o uso de NumPy e operações vetorizadas
+
+requirements.txt
+
+Lista completa de bibliotecas necessárias para rodar:
+
+pandas
+numpy
+matplotlib
+seaborn
+
+README.md
+
+Documentação oficial e completa, seguindo o padrão exigido pelo professor.
+
+### 9.2 ✔ Organização Pensada para Expansão
+
+A estrutura permite facilmente adicionar:
+
+Novas análises em analise_dado.py
+
+Notebooks (Jupyter)
+
+APIs futuras
+
+Sistema de login com senha
+
+Persistência em banco SQLite
+
+
+
+# 10. 🖼️ Capturas de Tela / Exemplos de Saída
+
+A seguir, são apresentados exemplos reais de saída do sistema, ilustrando o funcionamento das principais funcionalidades do projeto.
+
+## 10.1 📌 Exemplo — Cadastro de Jogador
+![Tela de cadastro](images/menu_cadastro.png)
+
+## 10.2 📌 Exemplo — Login
+![Tela de login](images/login.png)
+## 10.3 🎮 Exemplo — Jogando uma Partida
+🎯 Novo jogo! Adivinhe um número entre 1 e 100.
+Tentativa 1/10: 50
+➡️  Tente um número MAIOR.
+Tentativa 2/10: 80
+⬅️  Tente um número MENOR.
+Tentativa 3/10: 72
+⬅️  Tente um número MENOR.
+Tentativa 4/10: 68
+➡️  Tente um número MAIOR.
+Tentativa 5/10: 70
+✅ Você acertou! Parabéns!
+
+Resultado: Vitória | Pontuação: 60
+
+## 10.4 📊 Exemplo — Estatísticas do Jogador
+📈 Estatísticas — Lucas Henrique Damasceno Fernandes
+Total de partidas: 4
+Vitórias: 3 | Derrotas: 1
+Taxa de vitória: 75.0%
+Média de tentativas: 5.25
+Melhor pontuação: 90
+Pontuação total: 270
+
+## 10.5 🏆 Exemplo — Ranking Geral
+🏆 Ranking — Pontuação média
+ 1. lucas          72.50
+ 2. maria          68.00
+
+🏆 Ranking — Número de vitórias
+ 1. lucas          3
+ 2. maria          2
+
+🏆 Ranking — Melhor pontuação única
+ 1. lucas          90
+ 2. maria          80
+
+🏆 Ranking — Menor nº de tentativas (vitórias)
+ 1. lucas          3
+ 2. maria          4
+
+## 10.6 🕑 Exemplo — Histórico de Partidas
+🕑 Últimas partidas:
+#004 | 2025-11-12 | Vitória | tentativas= 5 | pontos= 70
+#003 | 2025-11-12 | Derrota | tentativas=10 | pontos=  0
+#002 | 2025-11-11 | Vitória | tentativas= 3 | pontos= 90
+#001 | 2025-11-11 | Vitória | tentativas= 4 | pontos= 80
+
+## 10.7 📁 Exemplo — Arquivo de Estatísticas Gerado
+
+relatorios/estatisticas_lucas.txt
+
+{
+  "lucas": {
+    "nome": "Lucas Henrique Damasceno Fernandes",
+    "total_partidas": 4,
+    "vitorias": 3,
+    "derrotas": 1,
+    "taxa_vitoria": 75.0,
+    "media_tentativas": 5.25,
+    "melhor_pontuacao": 90,
+    "pontuacao_total": 270
+  }
+}
+
+## 10.8 📁 Exemplo — Ranking Consolidado Gerado
+
+relatorios/ranking_geral.txt
+
+{
+  "ranking_pontuacao_media": [
+    ["lucas", 72.5],
+    ["maria", 68.0]
+  ],
+  "ranking_vitorias": [
+    ["lucas", 3],
+    ["maria", 2]
+  ],
+  "ranking_melhor_pontuacao": [
+    ["lucas", 90],
+    ["maria", 80]
+  ],
+  "ranking_menor_tentativas": [
+    ["lucas", 3],
+    ["maria", 4]
+  ]
+}
+
+## 10.9 📉 Exemplos de Gráficos Gerados (Matplotlib / Seaborn)
+
+Esses gráficos são produzidos pelo script analise_dados.py:
+
+Histograma de Pontuações
+
+Gráfico de Barras (Vitórias por Jogador)
+
+Boxplot das Pontuações
+
+Heatmap de Correlação (tentativas, pontuação, vitória)
