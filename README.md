@@ -548,22 +548,29 @@ A estrutura permite fácil manutenção, expansão e análise dos dados gerados.
 
 projeto_04_sistema_jogo_adivinhacao/
 │
-├── jogo_adivinhacao.py          ← Arquivo principal do sistema (CLI)
-├── analise_dado.py              ← Script de análise com Pandas, NumPy e gráficos
-├── requirements.txt             ← Dependências do projeto
-├── README.md                    ← Documentação completa do projeto
+├── 📜 jogo_adivinhacao.py        # Sistema principal (CLI)
+├── 📜 analise_dado.py            # Análises com Pandas/NumPy/Matplotlib/Seaborn
+├── 📄 README.md                  # Documentação completa
+├── 📄 requirements.txt           # Dependências do projeto
+├── ⚙️ .gitignore                 # Arquivos ignorados pelo Git
 │
-├── dados/                       ← Persistência dos dados (JSON em formato .txt)
-│   ├── jogadores.txt            ← Base de usuários (nome, usuário, cadastro)
-│   └── partidas.txt             ← Histórico completo de partidas
+├── 📁 dados/                     # Persistência dos dados
+│   ├── 📄 jogadores.txt          # Registro de usuários
+│   └── 📄 partidas.txt           # Histórico completo das partidas
 │
-├── relatorios/                  ← Relatórios exportados automaticamente
-│   ├── estatisticas_[usuario].txt
-│   └── ranking_geral.txt
+├── 📁 relatorios/                # Relatórios gerados automaticamente
+│   ├── 📄 ranking_geral.txt
+│   └── 📄 estatisticas_[usuario].txt
 │
-├── venv/                        ← Ambiente virtual do Python
-    ├── Scripts/ (Windows) ou bin/ (Linux/Mac)
-    └── Lib/
+├── 📁 images/                    # Imagens utilizadas no README
+│   ├── 🖼️ menu_cadastro.png
+│   └── 🖼️ login.png
+│
+└── 📁 venv/                      # Ambiente virtual do Python
+    ├── 📁 Scripts/
+    ├── 📁 Lib/
+    └── ...
+
 
 
 ### 9.1 🧱 Diretórios Principais
@@ -673,105 +680,186 @@ A seguir, são apresentados exemplos reais de saída do sistema, ilustrando o fu
 
 ## 10.1 📌 Exemplo — Cadastro de Jogador
 ![Tela de cadastro](images/menu_cadastro.png)
-
 ## 10.2 📌 Exemplo — Login
 ![Tela de login](images/login.png)
 ## 10.3 🎮 Exemplo — Jogando uma Partida
-🎯 Novo jogo! Adivinhe um número entre 1 e 100.
-Tentativa 1/10: 50
-➡️  Tente um número MAIOR.
-Tentativa 2/10: 80
-⬅️  Tente um número MENOR.
-Tentativa 3/10: 72
-⬅️  Tente um número MENOR.
-Tentativa 4/10: 68
-➡️  Tente um número MAIOR.
-Tentativa 5/10: 70
-✅ Você acertou! Parabéns!
-
-Resultado: Vitória | Pontuação: 60
-
+![Tela de partida](images/partida.png)
 ## 10.4 📊 Exemplo — Estatísticas do Jogador
-📈 Estatísticas — Lucas Henrique Damasceno Fernandes
-Total de partidas: 4
-Vitórias: 3 | Derrotas: 1
-Taxa de vitória: 75.0%
-Média de tentativas: 5.25
-Melhor pontuação: 90
-Pontuação total: 270
-
+![Tela de estatística do jogador](images/est_jogador.png)
 ## 10.5 🏆 Exemplo — Ranking Geral
-🏆 Ranking — Pontuação média
- 1. lucas          72.50
- 2. maria          68.00
-
-🏆 Ranking — Número de vitórias
- 1. lucas          3
- 2. maria          2
-
-🏆 Ranking — Melhor pontuação única
- 1. lucas          90
- 2. maria          80
-
-🏆 Ranking — Menor nº de tentativas (vitórias)
- 1. lucas          3
- 2. maria          4
-
+![Tela de ranking](images/ranking.png)
 ## 10.6 🕑 Exemplo — Histórico de Partidas
-🕑 Últimas partidas:
-#004 | 2025-11-12 | Vitória | tentativas= 5 | pontos= 70
-#003 | 2025-11-12 | Derrota | tentativas=10 | pontos=  0
-#002 | 2025-11-11 | Vitória | tentativas= 3 | pontos= 90
-#001 | 2025-11-11 | Vitória | tentativas= 4 | pontos= 80
-
+![Tela de histórico](images/hist.png)
 ## 10.7 📁 Exemplo — Arquivo de Estatísticas Gerado
-
-relatorios/estatisticas_lucas.txt
-
-{
-  "lucas": {
-    "nome": "Lucas Henrique Damasceno Fernandes",
-    "total_partidas": 4,
-    "vitorias": 3,
-    "derrotas": 1,
-    "taxa_vitoria": 75.0,
-    "media_tentativas": 5.25,
-    "melhor_pontuacao": 90,
-    "pontuacao_total": 270
-  }
-}
-
+![Tela de estatisticas](images/est_usuario_txt.png)
+![Tela do txt de estatística do jogador](images/est_usuario_txt.png)
 ## 10.8 📁 Exemplo — Ranking Consolidado Gerado
-
-relatorios/ranking_geral.txt
-
-{
-  "ranking_pontuacao_media": [
-    ["lucas", 72.5],
-    ["maria", 68.0]
-  ],
-  "ranking_vitorias": [
-    ["lucas", 3],
-    ["maria", 2]
-  ],
-  "ranking_melhor_pontuacao": [
-    ["lucas", 90],
-    ["maria", 80]
-  ],
-  "ranking_menor_tentativas": [
-    ["lucas", 3],
-    ["maria", 4]
-  ]
-}
-
+(images/ranking_geral.txt)
+![Tela do txt de estatística do jogador](images/est_rank_txt.png)
 ## 10.9 📉 Exemplos de Gráficos Gerados (Matplotlib / Seaborn)
+![Tela de gráficos](images/graficos.png)
 
-Esses gráficos são produzidos pelo script analise_dados.py:
+## 11. 🧪 Testes Realizados
 
-Histograma de Pontuações
+Durante o desenvolvimento do projeto, foram realizados diversos testes para garantir o correto funcionamento do sistema, cobrindo desde operações básicas até análises avançadas.
 
-Gráfico de Barras (Vitórias por Jogador)
+# 11.1 Cenários Testados
 
-Boxplot das Pontuações
+Cadastro de jogadores com diferentes nomes e usuários
 
-Heatmap de Correlação (tentativas, pontuação, vitória)
+Tentativas de cadastro duplicado (esperado: erro)
+
+Login com usuário válido
+
+Login com usuário inexistente
+
+Execução completa de partidas com vitória
+
+Execução de partidas com derrota
+
+Partidas usando valores inválidos (texto, números fora do intervalo)
+
+Estatísticas com zero partidas
+
+Estatísticas após múltiplas partidas
+
+Geração de rankings com múltiplos jogadores
+
+Histórico de partidas em ordem cronológica
+
+Configuração de limites do jogo (mínimo, máximo, tentativas)
+
+Análises de dados com DataFrames com dados reais
+
+Geração automática das pastas analise_de_dados/analise_X
+
+Salvamento de gráficos Matplotlib/Seaborn
+
+# 11.2 Resultados Obtidos
+
+Cadastro funcionando corretamente e persistindo os dados
+
+Validação adequada para entradas inválidas
+
+Pontuação calculada com precisão
+
+Rankings gerados e ordenados corretamente
+
+Arquivos JSON atualizados automaticamente
+
+Relatórios de estatísticas e ranking gerados corretamente
+
+Análises em Pandas funcionando sem erros
+
+Gráficos salvos automaticamente nas pastas corretas
+
+Nenhum erro em conversão de tipos, duplicação ou datas
+
+Consistência total entre dados do jogo e análises produzidas
+
+# 11.3 Validações Implementadas
+
+Verificação de usuário duplicado
+
+Garantia de que nome e usuário não são vazios
+
+Validação de entrada numérica no jogo
+
+Restrições de intervalo (min e max do número secreto)
+
+Validação de limites configurados
+
+Try/except para leitura e escrita de arquivos
+
+Conversão segura de datas (Pandas to_datetime)
+
+Remoção segura da coluna tentativas (listas)
+
+Proteção contra DataFrames vazios ou corrompidos
+
+## 12. 📚 Referências e Bibliografia
+# 12.1 Documentação Consultada
+
+Documentação oficial do Python
+https://docs.python.org/3/
+
+Documentação do Pandas
+https://pandas.pydata.org/docs/
+
+Documentação do NumPy
+https://numpy.org/doc/
+
+Documentação do Matplotlib
+https://matplotlib.org/stable/
+
+Documentação do Seaborn
+https://seaborn.pydata.org/
+
+# 12.2 Datasets Utilizados
+
+O projeto utiliza dataset próprio, gerado automaticamente pelo sistema:
+
+dados/jogadores.txt — Registro de jogadores
+
+dados/partidas.txt — Histórico de partidas acumulado (JSON)
+
+Além disso, para análise de dados, foi gerado um dataset processado internamente:
+
+analise_de_dados/analise_X/ — Gráficos e estatísticas
+
+Não foram utilizados datasets externos.
+
+# 14. 🚀 Próximos Passos / Melhorias Futuras
+## 14.1 Funcionalidades que Poderiam Ser Adicionadas (Simples e Viáveis)
+
+Redefinir pontuação e histórico do jogador
+
+Mostrar dicas mais inteligentes (ex.: diferença entre números)
+
+Exibir resumo da partida ao final (taxa de acerto por tentativa)
+
+Criar níveis de dificuldade (fácil / médio / difícil)
+
+Criar opção de excluir um jogador
+
+Criar opção de limpar todas as partidas do sistema
+
+Permitir exportar estatísticas para CSV
+
+Adicionar confirmação antes de sair
+
+Criar um contador total de partidas do sistema
+
+Melhorar as mensagens e feedbacks do menu
+
+Criar comparação direta entre dois jogadores
+
+Permitir carregar configurações a partir de arquivo .txt
+
+Adicionar um Modo Torneio, permitindo que vários jogadores disputem várias rodadas com ranking final.
+
+## 14.2 Melhorias Técnicas (Simples)
+
+Separar o código em módulos (jogo.py, estatisticas.py, relatorios.py)
+
+Melhorar tratamento de erros com mensagens padronizadas
+
+Criar funções reutilizáveis para leitura/escrita
+
+Melhorar validações de entrada e sanitização das opções do menu
+
+Refinar formatação de rankings e relatórios
+
+Otimizar organização da pasta analise_X
+
+## 14.3 Expansões do Projeto
+
+Gráficos adicionais (linha do tempo, evolução de desempenho)
+
+Relatórios compactos para impressão
+
+Comparações lado a lado entre jogadores
+
+Visualizações por dia/semana usando pandas
+
+Exportação de dados brutos em CSV para BI
